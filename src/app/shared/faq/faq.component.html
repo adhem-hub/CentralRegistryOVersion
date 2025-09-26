@@ -1,0 +1,100 @@
+<div class="faq-container max-w-[1180px] mx-auto  py-6 ">
+   
+    <!-- <mat-accordion class="w-full space-y-2">
+      <mat-expansion-panel 
+        *ngFor="let item of data; trackBy: trackByFn"
+        [expanded]="item.isExpanded"
+        class="mb-2 !shadow-none !border !border-gray-200 !rounded-lg !bg-white"
+        hideToggle="true">
+        
+        <mat-expansion-panel-header 
+          class="bg-white transition-colors duration-200 px-6 py-4">
+          <mat-panel-title class="text-md font-medium  flex items-center justify-between gap-2">
+            <span class="text-[#085E5A]">{{item.title }}</span> 
+            <mat-icon 
+              class="text-gray-800 transition-transform duration-200"
+              [class.rotate-180]="item.isExpanded">
+              expand_more
+            </mat-icon>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        
+        <div class="px-4 py-3 bg-white border-t border-gray-300">
+          <div class="text-gray-700 leading-relaxed whitespace-pre-line">
+            {{ item.content }}
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion> -->
+
+    <div *ngIf="loading" class="flex justify-center items-center py-8">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    
+    <!-- <div *ngIf="error" class="text-red-600 text-center py-4">
+      {{ error }}
+    </div> -->
+    
+    <mat-accordion class="w-full space-y-2" *ngIf="!loading && !error">
+      <mat-expansion-panel
+        *ngFor="let item of data; trackBy: trackByFn"
+        [expanded]="item.isExpanded"
+        class="mb-2 !shadow-none !border !border-gray-200 !rounded-lg !bg-white"
+        hideToggle="true">
+       
+        <mat-expansion-panel-header
+          class="bg-white transition-colors duration-200 px-6 py-4">
+          <mat-panel-title class="text-md font-medium flex items-center justify-between gap-2">
+            <span class="text-[#085E5A]">{{item.title }}</span>
+            <mat-icon
+              class="text-gray-800 transition-transform duration-200"
+              [class.rotate-180]="item.isExpanded">
+              expand_more
+            </mat-icon>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+       
+        <div class="px-4 py-3 bg-white border-t border-gray-300">
+          <!-- <div class="text-gray-700 leading-relaxed whitespace-pre-line">
+            {{ item.content }}
+          </div> -->
+          <div class="text-gray-700 leading-relaxed whitespace-pre-line" [innerHTML]="item.content">
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <!-- <div class="mt-4 p-4  flex justify-center space-x-3 gap-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        {{'do_you_have_any_questions' | translate}}
+      </h3>
+
+        <div class="flex items-center justify-center space-x-3 gap-3">
+          <mat-icon class="text-gray-600">phone</mat-icon>
+          <a 
+            href="tel:{{parentCompany?.phone_number}}" 
+            class="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            {{parentCompany?.phone_number || ("search.phoneNotAvailable" | translate)}}
+          </a>
+        </div>
+        
+        <div class="flex items-center justify-center space-x-3 gap-3" *ngIf="parentCompany?.fax_number">
+          <mat-icon class="text-gray-600">print</mat-icon>
+          <span class="font-medium">
+            {{parentCompany?.fax_number}}
+          </span>
+        </div>
+        
+        <div class="flex items-center justify-center space-x-3 gap-4">
+          <mat-icon class="text-gray-600">email</mat-icon>
+          <a 
+            href="mailto:{{parentCompany?.email}}" 
+            class="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            {{parentCompany?.email || ("search.emailNotAvailable" | translate)}}
+          </a>
+        </div>
+    </div> -->
+  </div>
+
+  

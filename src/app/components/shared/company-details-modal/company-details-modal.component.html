@@ -1,0 +1,313 @@
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden flex flex-col">
+    <!-- Enhanced Header -->
+    <div class="bg-[#085E5A] px-3 py-2 text-white">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+            <svg
+                    class="w-7 h-7"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold">{{ "companyInformation" | translate }}</h4>
+          </div>
+        </div>
+        <button
+          (click)="onCloseModal()"
+          class="bg-white bg-opacity-20 hover:bg-opacity-30 p-2 rounded-lg transition-all duration-200"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto px-8 py-6 space-y-8">
+      <!-- Company Information Section -->
+      <div class="rounded-xl p-3 border border-gray-200 shadow-sm">
+        <div class="flex items-center space-x-3 mb-6">
+          <div class="bg-blue-50 p-3 rounded-full">
+            <svg
+              class="w-6 h-6 text-[#085E5A]"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 4h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"
+              />
+            </svg>
+          </div>
+          <label class="text-lg font-bold text-gray-800">{{ "companyInformation" | translate }}</label>
+        </div>
+  
+        <div>
+          <!-- First Row -->
+          <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4 mb-4">
+            <div class="flex items-center space-x-3">
+              <div class="h-14 w-14 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                <img 
+                  [src]="company?.logo_url" 
+                  [alt]="company?.name + ' logo'"
+                  class="h-full w-full object-cover"
+                  *ngIf="searchResults[0]?.logo_url"
+                />
+                <div  
+                  class="h-full w-full flex items-center justify-center text-blue-700 text-xl font-medium"
+                  *ngIf="!searchResults[0]?.logo_url"
+                >
+                  {{ company?.name?.charAt(0)?.toUpperCase() }}
+                </div>
+              </div>
+  
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Company Name" | translate }}</label>
+                <p class="text-gray-900 font-semibold">{{ company?.name }}</p>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "UID" | translate }}</label>
+              <p class="text-gray-900 font-semibold">{{ company?.unique_identifier }}</p>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Approvalstatus" | translate }}</label>
+              <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': company?.approval_status?.toLowerCase() === 'accepted',
+                      'bg-yellow-100 text-yellow-800': company?.approval_status?.toLowerCase() === 'pending',
+                      'bg-red-100 text-red-800': company?.approval_status?.toLowerCase() === 'rejected',
+                      'bg-gray-100 text-gray-800': !company?.approval_status
+                    }">
+                {{ "STATUS_" + company?.approval_status?.toUpperCase() | translate }}
+              </span>
+            </div>
+          </div>
+  
+          <!-- Logo and Profile Row -->
+          <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Company Profile" | translate }}</label>
+             <a 
+                *ngIf="company?.company_profile"
+                [href]="company?.company_profile"
+                target="_blank"
+                class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+              >
+                <span>{{'view_profile' | translate }}</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Phone Number" | translate }}</label>
+              <p class="text-gray-900 font-medium">{{ company?.phone_number }}</p>
+            </div>
+  
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Languages" | translate }}</label>
+              <div class="flex flex-wrap gap-2">
+                <span 
+                  *ngFor="let code of company?.languages"
+                  class="inline-flex px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md font-medium"
+                >
+                  {{ "LANGUAGES." + (languageCodeToKey[code] || code) | translate }}
+                </span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Contact and Business Info -->
+          <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "SECTOR" | translate }}</label>
+              <!-- <p class="text-gray-900 font-medium">{{ getTranslatedSector(company?.legal_information?.sector) }}</p> -->
+              <p class="text-gray-900 font-medium">{{ "SECTORE."+ (company?.legal_information?.sector).toUpperCase() | translate }}</p>
+              
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "COMPANY_CAPITAL" | translate }}</label>
+              <!-- <p class="text-gray-900 font-semibold">{{ formatSwissNumber(company?.financial_information?.company_capital || "") }} {{ company.financial_information.company_capital? ('CHF' | translate) : '' }}</p> -->
+              <p class="text-gray-900 font-semibold">{{ formatSwissNumber(company?.financial_information?.company_capital || "") }} </p>
+            </div>
+          
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Company Purpose" | translate }}</label>
+              <p class="text-gray-900 font-medium">{{ company?.company_purpose }}</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Location Information -->
+        <div class="mt-2">
+          <label class="text-md font-semibold text-gray-800 mb-4">{{'location_details' | translate}}</label>
+          <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "HEADQUARTERS" | translate }}</label>
+              <p class="text-gray-900 font-medium">{{ company?.headquarters }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "ZIP CODE" | translate }}</label>
+              <p class="text-gray-900 font-medium">{{ company?.zip_code }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "LOCATION" | translate }}</label>
+              <p class="text-gray-900 font-medium">{{ company?.location }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "COUNTRY" | translate }}</label>
+              <p class="text-gray-900 font-medium">
+                <!-- {{ "COUNTRIES.SWITZERLAND" | translate }} -->
+                
+                    {{ ("COUNTRIES." + company.country.toUpperCase()) | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Activities Section -->
+      <div class="rounded-xl shadow-sm p-3 border border-gray-200">
+        <div class="flex items-center space-x-3 mb-4">
+          <div class="bg-blue-50 p-3 rounded-full">
+            <svg
+                    class="w-6 h-6 text-[#085E5A]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="M8.737 8.737a21.49 21.49 0 0 1 3.308-2.724m0 0c3.063-2.026 5.99-2.641 7.331-1.3 1.827 1.828.026 6.591-4.023 10.64-4.049 4.049-8.812 5.85-10.64 4.023-1.33-1.33-.736-4.218 1.249-7.253m6.083-6.11c-3.063-2.026-5.99-2.641-7.331-1.3-1.827 1.828-.026 6.591 4.023 10.64m3.308-9.34a21.497 21.497 0 0 1 3.308 2.724m2.775 3.386c1.985 3.035 2.579 5.923 1.248 7.253-1.336 1.337-4.245.732-7.295-1.275M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+                    />
+            </svg>
+          </div>
+          <label class="text-lg font-bold text-gray-800">{{ "ACTIVITIES" | translate }}</label>
+        </div>
+        
+        <div>
+          <div class="grid gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "PROJECT_ACTIVITY" | translate }}</label>
+              <p class="text-gray-900 font-medium">
+                {{ company?.activity?.project_name }} {{ company?.activity?.project_name ? '-' : '' }} {{ company?.activity?.details }}
+              </p>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">{{ "FINANCIAL_REPORT" | translate }}</label>
+              
+              <a  *ngIf="company?.financial_report && 
+                       company?.financial_report !== 'https://centralresgistrybucket.s3.amazonaws.com/files/financial_reports/e0e033a4b48f4ee9b62b130fb8b8e713_financial_report.pdf'"
+                [href]="company?.financial_report"
+                target="_blank"
+                class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+              >
+                <span>{{ "VIEW_REPORT" | translate }}</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+              <span
+                *ngIf="company?.financial_report === 'https://centralresgistrybucket.s3.amazonaws.com/files/financial_reports/e0e033a4b48f4ee9b62b130fb8b8e713_financial_report.pdf'
+                || !company?.financial_report"
+                class="text-gray-900 font-medium"
+              >
+                {{ "NO_REPORT" | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Management Details Section -->
+      <div class="rounded-xl shadow-sm p-3 border border-gray-200">
+        <div class="flex items-center space-x-3 mb-4">
+          <div class="bg-blue-50 p-3 rounded-full">
+            <svg
+            class="w-6 h-6 text-[#085E5A]"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+            />
+          </svg>
+          </div>
+          <label class="text-lg font-bold text-gray-800">{{ "MANAGEMENT_DETAILS" | translate }}</label>
+        </div>
+        
+        <div class="space-y-4">
+          <div 
+            *ngFor="let director of company?.directors; let i = index"
+            class="rounded-lg p-3 border-l-2 border-gray-200"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <!-- <label class="font-bold text-gray-800">{{'Director' | translate }} {{ i + 1 }}</label> -->
+              <label class="font-bold text-gray-800">{{'director' | translate }} </label>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4 mb-2">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "FULL_NAME" | translate }}</label>
+                <p class="text-gray-900 font-medium">{{ director.salutation | salutationTranslate : currentLanguage }} {{ director.first_name }} {{ director.last_name }}</p>
+              </div>
+             
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "role" | translate }}</label>
+                <p class="text-gray-900 font-medium">{{ director.role | translate }}</p>
+              </div>
+             
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "SIGNATORIES" | translate }}</label>
+                <p class="text-gray-900 font-medium">{{ director.signature }}</p>
+              </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "Email" | translate }}</label>
+                <p class="text-gray-900 font-medium">{{ director.email }}</p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "direct line" | translate }}</label>
+                <p class="text-gray-900 font-medium">{{ director.phone_number }}</p>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">{{ "NUMBER_OF_EMPLOYEES" | translate }}</label>
+                <p class="text-gray-900 font-medium">{{ director.number_of_employees }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,145 @@
+<div class="w-full">
+    <!-- Upload Area -->
+    <div 
+      class="border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 cursor-pointer"
+      [class.border-green-400]="!isDragOver && !disabled"
+      [class.bg-green-50]="!isDragOver && !disabled"
+      [class.border-green-600]="isDragOver && !disabled"
+      [class.bg-green-100]="isDragOver && !disabled"
+      [class.border-gray-300]="disabled"
+      [class.bg-gray-100]="disabled"
+      [class.cursor-not-allowed]="disabled"
+      [class.hidden]="selectedFile || base64Data"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="onBrowseClick()">
+      
+      <!-- Upload Icon -->
+      <div class="mb-4">
+        <!-- <mat-icon [class]="disabled ? 'text-6xl text-gray-400' : 'text-6xl text-green-900'">
+          cloud_upload
+        </mat-icon> -->
+        <svg
+        [class]="disabled ? ' text-gray-400' : ' text-[#085E5A]'"
+                        class="w-6 h-6 dark:text-[#085E5A] mx-auto"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"
+                        />
+                      </svg>
+      </div>
+      
+      <!-- Upload Text -->
+      <div class="mb-4">
+        <h3 [class]="disabled ? 'text-lg font-medium text-gray-400 mb-2' : 'text-lg font-medium text-gray-700 mb-2'">
+          {{ 'drag_files_to_upload' | translate }}
+        </h3>
+        <p [class]="disabled ? 'text-sm text-gray-400 mb-4' : 'text-sm text-gray-500 mb-4'">or</p>
+        
+        <button 
+          type="button"
+          mat-raised-button 
+          color="primary" 
+          [disabled]="disabled || isProcessing"
+          class="!bg-[#085E5A] !text-white disabled:!bg-gray-400">
+          <mat-icon *ngIf="isProcessing" class="!mr-2 !text-sm animate-spin">refresh</mat-icon>
+          {{ isProcessing ? ('Processing' | translate) : ('browse_files' | translate) }}
+        </button>
+      </div>
+      
+      <!-- File Info -->
+      <div [class]="disabled ? 'text-xs text-gray-300' : 'text-xs text-gray-400'">
+        <p>{{ 'max_file_size' | translate:{ maxFileSize: maxFileSize } }} </p>
+        <p>S{{'supported_file_types' | translate}}</p>
+      </div>
+    </div>
+  
+    <!-- Hidden File Input -->
+    <input 
+      #fileInput
+      type="file" 
+      class="hidden" 
+      [accept]="acceptedTypes"
+      [multiple]="multiple"
+      [disabled]="disabled"
+      (change)="onFileSelected($event)">
+  
+    <!-- File Preview -->
+    <div *ngIf="selectedFile || base64Data" class="mt-4">
+      <!-- Image Preview -->
+      <div *ngIf="previewUrl" class="relative">
+        <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg border">
+          <!-- Preview Image -->
+          <div class="flex-shrink-0">
+            <img 
+              [src]="previewUrl" 
+              [alt]="selectedFile?.name || 'Preview'"
+              class="w-16 h-16 object-cover rounded-lg border">
+          </div>
+          
+          <!-- File Info -->
+          <div class="flex-grow min-w-0">
+            <div class="flex items-center justify-between">
+              <div class="truncate">
+                <p class="text-sm font-medium text-gray-900 truncate">
+                  {{ selectedFile?.name || 'Image file' }}
+                </p>
+                <p class="text-xs text-gray-500" *ngIf="selectedFile">
+                  {{ formatFileSize(selectedFile.size) }}
+                </p>
+                <!-- <p class="text-xs text-green-600 mt-1">
+                  <mat-icon class="!text-xs !mr-1">check_circle</mat-icon>
+                  Base64 ready
+                </p> -->
+              </div>
+              
+              <!-- Status -->
+              <div class="flex items-center space-x-2 ml-4">
+                <div *ngIf="!isProcessing" class="flex items-center text-green-600">
+                  <mat-icon class="text-sm">check_circle</mat-icon>
+                  <span class="text-xs ml-1">{{'Ready' | translate}}</span>
+                </div>
+                
+                <!-- Processing -->
+                <div *ngIf="isProcessing" class="flex items-center text-green-900">
+                  <mat-progress-spinner 
+                    diameter="16" 
+                    mode="indeterminate">
+                  </mat-progress-spinner>
+                  <span class="text-xs ml-2">{{'Processing' | translate}}</span>
+                </div>
+                
+                <!-- Remove Button -->
+                <button 
+                  type="button"
+                  mat-icon-button 
+                  [disabled]="disabled || isProcessing"
+                  class="!w-10 !h-10 !text-red-600 disabled:!text-gray-400"
+                  (click)="removeFile()">
+                  <mat-icon class="!text-sm">close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- <div *ngIf="base64Data" class="mt-4 p-3 bg-gray-100 rounded text-xs">
+      <strong>Base64 Info:</strong><br>
+      <span>MIME Type: {{ getMimeType() }}</span><br>
+      <span>Data Length: {{ getBase64Data()?.length }} characters</span><br>
+      <span>Preview: {{ base64Data.substring(0, 50) }}...</span>
+    </div> -->
+  </div>

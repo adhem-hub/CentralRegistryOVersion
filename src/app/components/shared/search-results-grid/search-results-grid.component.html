@@ -1,0 +1,99 @@
+<div  class="w-full max-w-7xl mx-auto px-4 py-2">
+    <!-- Header with results count -->
+    <div class="mb-4 bg-white rounded-lg shadow-sm p-3 border border-gray-200">
+      <h2 class="text-base font-semibold text-gray-900">
+        {{ "RESULTS_COUNT" | translate }}: {{ searchTotalItems }}
+      </h2>
+    </div>
+  
+    <!-- Results List/Grid -->
+    <div class="space-y-3 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4 lg:space-y-0">
+      <div
+        *ngFor="let company of searchResults"
+        class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200"
+      >
+        <div class="p-4">
+          <!-- Header: Logo, Name, UID, PDF Button -->
+          <div class="flex items-start justify-between mb-3">
+            <!-- Logo and Company Info -->
+            <div class="flex items-start space-x-3 flex-1 min-w-0">
+              <!-- Logo -->
+              <div class="h-12 w-12 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                <img 
+                  [src]="company.logo_url" 
+                  [alt]="company.name + ' logo'"
+                  class="h-full w-full object-cover"
+                  *ngIf="company?.logo_url"
+                />
+                <div  
+                  class="h-full w-full flex items-center justify-center text-blue-700 text-lg font-semibold"
+                  *ngIf="!company?.logo_url"
+                >
+                  {{ company.name?.charAt(0)?.toUpperCase() }}
+                </div>
+              </div>
+              
+              <!-- Name and UID -->
+              <div class="flex-1 min-w-0">
+                <h3
+                  class="text-blue-600 hover:text-blue-800 font-medium text-base hover:underline cursor-pointer truncate"
+                  (click)="onViewCompanyDetails(company.id)"
+                >
+                  {{ company.name }}
+                </h3>
+                <p class="text-gray-500 text-sm mt-0.5">
+                  {{ company.unique_identifier }}
+                </p>
+              </div>
+            </div>
+            
+            <!-- PDF Button -->
+            <button
+              (click)="onGeneratePDF(company.id)"
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline flex-shrink-0 ml-2"
+            >
+              PDF
+            </button>
+          </div>
+  
+          <!-- Details Section -->
+          <div class="space-y-3 text-sm">
+            <!-- Location -->
+            <div>
+              <dt class="text-gray-500 font-medium text-xs uppercase tracking-wider mb-1">
+                {{ "LOCATION" | translate }}
+              </dt>
+              <dd class="text-gray-900">
+                <div *ngIf="company.headquarters || company.location">
+                  {{ company.headquarters }}{{ company.headquarters && company.location ? ' ' : '' }}{{ company.location }}
+                </div>
+                <div>
+                  {{ ("COUNTRIES." + company.country.toUpperCase()) | translate }}
+                </div>
+              </dd>
+            </div>
+  
+            <!-- Legal Form -->
+            <div>
+              <dt class="text-gray-500 font-medium text-xs uppercase tracking-wider mb-1">
+                {{ "legal_form" | translate }}
+              </dt>
+              <dd class="text-gray-900">
+                {{ getLegalFormName(company.legal_information.legal_forms) }}
+              </dd>
+            </div>
+  
+            <!-- Legal Status -->
+            <div>
+              <dt class="text-gray-500 font-medium text-xs uppercase tracking-wider mb-1">
+                {{ "LEGAL_STATUS" | translate }}
+              </dt>
+              <dd class="text-gray-900">
+                {{ getTranslatedStatus(company.legal_information.legal_status) }}
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

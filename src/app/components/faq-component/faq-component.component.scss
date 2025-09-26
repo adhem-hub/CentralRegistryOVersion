@@ -1,0 +1,92 @@
+.faq-container {
+    .faq-section {
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      
+      ::ng-deep {
+        .mat-expansion-panel-header {
+          padding: 0 1.5rem;
+          height: 60px;
+          
+          &.mat-expanded {
+            min-height: 60px;
+          }
+        }
+        
+        .mat-expansion-panel-body {
+          padding: 0;
+        }
+        
+        .mat-expansion-indicator {
+          &::after {
+            color: #6b7280;
+          }
+        }
+      }
+    }
+    
+    .nested-accordion {
+      ::ng-deep {
+        .mat-expansion-panel {
+          box-shadow: none;
+          
+          &:not(:last-child) {
+            border-bottom: 1px solid #f3f4f6;
+          }
+          
+          &::before {
+            display: none;
+          }
+        }
+        
+        .mat-expansion-panel-header {
+          padding: 1rem 1.5rem;
+          height: auto;
+          min-height: 56px;
+          
+          &.mat-expanded {
+            min-height: 56px;
+          }
+        }
+        
+        .mat-expansion-panel-body {
+          padding: 0;
+        }
+        
+        .mat-expansion-indicator {
+          &::after {
+            color: #9ca3af;
+          }
+        }
+      }
+    }
+  }
+  
+  // Custom hover effects
+  .faq-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    // transition: all 0.3s ease;
+  }
+
+
+
+  /* Deep selectors to style the inner parts of the Angular Material components */
+
+
+  .nested-faq-list ::ng-deep .mat-expansion-panel {
+    box-shadow: none;
+  }
+
+  .nested-faq-list ::ng-deep .mat-expansion-panel-header {
+    padding: 1rem 0; 
+    height: auto;
+  }
+
+  .nested-faq-list ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+  }
+
+  .nested-faq-list ::ng-deep .mat-expansion-indicator::after {
+    color: #9ca3af;
+  }

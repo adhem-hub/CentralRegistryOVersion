@@ -1,0 +1,86 @@
+<div class="faq-container max-w-4xl mx-auto p-6">
+    <!-- Header -->
+    <div class="text-center mb-8 bg-white py-8 px-6 rounded-lg">
+      <h1 class="text-xl font-bold text-[#085E5A] mb-4">
+        {{'frequently_asked_questions' | translate}}
+      </h1>
+      <p class="text-gray-600 text-lg">
+        {{'here_you_will_find_answers_faq' | translate}}
+      </p>
+    </div>
+
+    <!-- FAQ Sections -->
+    <div class="faq-sections">
+      <!-- Loading State -->
+      <!-- <div *ngIf="loading" class="flex justify-center items-center py-8">
+        <mat-spinner></mat-spinner>
+        <span class="ml-3 text-gray-600">Loading FAQ...</span>
+      </div> -->
+      <div *ngIf="loading" class="flex justify-center items-center py-8">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    
+      <!-- Error State -->
+      <div *ngIf="error && !loading" class="text-center py-8">
+        <p class="text-red-600 mb-4">{{ error }}</p>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="refreshData()"
+          class="px-4 py-2">
+          {{ 'please_try_again' | translate }}
+        </button>
+      </div>
+    
+      <!-- FAQ Content -->
+      <div *ngIf="!loading && !error" class="space-y-4">
+        <mat-expansion-panel
+          *ngFor="let section of faqSections; trackBy: trackBySection"
+          class="faq-section shadow-sm border border-gray-200 rounded-lg overflow-hidden"
+          [expanded]="false"
+        >
+          <!-- Section Header -->
+          <mat-expansion-panel-header
+            class="bg-white hover:bg-gray-50 transition-colors duration-200"
+          >
+            <mat-panel-title
+              class="text-lg font-medium text-gray-800 flex items-center justify-between w-full"
+            >
+              <span>{{ section.title }}</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+      
+          <!-- Section Content (Questions and Answers) -->
+          <div class="bg-white px-4 py-3 border-t border-gray-200">
+            <!-- 
+              The nested accordion is also replaced with a div.
+              The questions inside will now follow a simple list format.
+            -->
+            <div class="nested-faq-list">
+              <mat-expansion-panel
+                *ngFor="let item of section.items; trackBy: trackByItem"
+                class="faq-item border-t border-gray-100 first:border-t-0"
+                [expanded]="false"
+              >
+                <!-- Question -->
+                <mat-expansion-panel-header
+                  class="py-4 px-6 bg-white hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <mat-panel-title class="text-base font-medium text-gray-700 pr-4">
+                    {{ item.question }}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+      
+                <!-- Answer -->
+                <div class="px-6 pb-4 bg-white">
+                  <p class="text-gray-600 leading-relaxed">
+                    {{ item.answer }}
+                  </p>
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
